@@ -1,5 +1,28 @@
-##Approach: I have approached to make a schema so it is less redundant ,i have done it by using references or foreign key concepet.
+##Q: You need to create a database for todoList reference trello website.
+In which you need to create schema to store users task details (for multiple users).
+User details
+Name
+Unique Id
+Mail
+Password
+Board
+Task can be,
+Done
+Pending
+In progress task
+Can add more task other than done, pending, in progress
+Task includes,
+Descriptions
+End time
+Title
+Sub task
+Descriptions
+End time
+Title
+
+##Approach: I have approached above problem in a way to make tables less redundant ,i have done it by using references or foreign key concepet.
             Starting from lower level subtasks -> tasks->boards->user_id ('->' means point to). It means that all task points to a certain task and tasks points to certain board and board point to some user.
+
 Step:1 Table to store user details
 
 CREATE TABLE Users (
