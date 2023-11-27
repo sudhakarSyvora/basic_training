@@ -1,0 +1,41 @@
+##Approach: I have approached to make a schema so it is less redundant ,i have done it by using references or foreign key concepet.
+            Starting from lower level subtasks -> tasks->boards->user_id ('->' means point to). It means that all task points to a certain task and tasks points to certain board and board point to some user.
+Step:1 Table to store user details
+
+CREATE TABLE Users (
+    user_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(100) NOT NULL
+);
+
+Step:2 Table to store boards
+
+CREATE TABLE Boards (
+    board_id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES Users(user_id),
+    board_name VARCHAR(100) NOT NULL
+);
+
+Step:3 Table to store task details
+
+CREATE TABLE Tasks (
+    task_id SERIAL PRIMARY KEY,
+    board_id INT REFERENCES Boards(board_id),
+    title VARCHAR(100) NOT NULL,
+    description TEXT,
+    end_time TIMESTAMP,
+    status VARCHAR(20) NOT NULL CHECK (status IN ('Done', 'Pending', 'In Progress', 'Other'))
+);
+
+Step:4 Table to store subtask details
+
+CREATE TABLE Subtasks (
+    subtask_id SERIAL PRIMARY KEY,
+    task_id INT REFERENCES Tasks(task_id),
+    subtask_title VARCHAR(100) NOT NULL,
+    subtask_description TEXT,
+    subtask_end_time TIMESTAMP
+);
+
+
