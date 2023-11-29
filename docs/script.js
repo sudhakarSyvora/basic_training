@@ -8,6 +8,15 @@ document.addEventListener("DOMContentLoaded", function () {
  
   function renderTodos() {
     todoList.innerHTML = "";
+    if (todos.length === 0) {
+      todoList.innerHTML = `
+      <div class='welcome-message'>
+          <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYjgg1iTomj0sJDfrTH3Ta93B_QftH7q_v3pL33RWLUV0sKffPQOz_T8lBGA&s'/>
+          <p class='empty-message'>Hey there! It looks like your task list is empty. Start your day by adding some tasks!</p>
+          </div>
+      `;
+  }
+  
     todos.forEach((todo, index) => {
       const li = document.createElement("li");
       let getTime = timeDiff(todo?.timestamp);
