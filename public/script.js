@@ -73,53 +73,64 @@ async function register() {
   registerBtn.innerHTML = "Register";
 }
 
-function getUsersByRole() {
-  axios
-    .get(`${baseURL}/usersList`)
-    .then((response) => {
-      try {
-        if (response.data?.authorized === false) {
-          return show("cred");
-        }
-        if (response?.data?.users.length > 0) {
-          const users = response?.data?.users;
-          const usersTable = document.getElementById("usersList");
-
-          usersTable.innerHTML = "";
-
-          const headerRow = usersTable.insertRow();
-          for (const key in users[0]) {
-            if (Object.prototype.hasOwnProperty.call(users[0], key)) {
-              const headerCell = document.createElement("th");
-              headerCell.textContent = key.toUpperCase();
-              headerRow.appendChild(headerCell);
-            }
-          }
-
-          users.forEach((user) => {
-            const row = usersTable.insertRow();
-            for (const key in user) {
-              if (Object.prototype.hasOwnProperty.call(user, key)) {
-                const cell = row.insertCell();
-                cell.textContent = user[key];
-              }
-            }
-          });
-          let nameField = document.getElementById("email");
-
-          nameField.innerText = response?.data?.currentUser?.email;
-          let roleField = document.getElementById("role");
-          roleField.innerText = response?.data?.currentUser?.role;
-          show("usersBox");
-        }
-      } catch (error) {
-        console.error("Error while displaying users:", error);
-      }
-    })
-    .catch((error) => {
+async function getUsersByRole() {
+  try {
+    const response = await axios.get(`${baseURL}/usersList`);
+    
+    if (response.data?.authorized === false) {
       return show("cred");
-    });
+    }
+
+    if (response?.data?.users.length > 0) {
+      const users = response?.data?.users;
+      const usersTable = document.getElementById("usersList");
+
+      usersTable.innerHTML = "";
+
+      const headerRow = usersTable.insertRow();
+
+      // Add SNO column at the beginning
+      const snoHeader = document.createElement("th");
+      snoHeader.textContent = "SNO";
+      headerRow.appendChild(snoHeader);
+
+      for (const key in users[0]) {
+        if (Object.prototype.hasOwnProperty.call(users[0], key)) {
+          const headerCell = document.createElement("th");
+          headerCell.textContent = key.toUpperCase();
+          headerRow.appendChild(headerCell);
+        }
+      }
+
+      users.forEach((user, index) => {
+        const row = usersTable.insertRow();
+
+        // Insert SNO value
+        const snoCell = row.insertCell();
+        snoCell.textContent = index + 1;
+
+        for (const key in user) {
+          if (Object.prototype.hasOwnProperty.call(user, key)) {
+            const cell = row.insertCell();
+            cell.textContent = user[key];
+          }
+        }
+      });
+
+      let nameField = document.getElementById("email");
+      nameField.innerText = response?.data?.currentUser?.email;
+
+      let roleField = document.getElementById("role");
+      roleField.innerText = response?.data?.currentUser?.role;
+
+      show("usersBox");
+    }
+  } catch (error) {
+    console.error("Error while displaying users:", error);
+    return show("cred");
+  }
 }
+
 getUsersByRole();
 
 function logout() {
