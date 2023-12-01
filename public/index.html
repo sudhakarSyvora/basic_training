@@ -17,66 +17,73 @@
     <div class="form-container" id="cred">
       <div id="loginBox" class="hidden">
         <h2>Login</h2>
-
-        <input type="email" id="loginEmail" placeholder="Email" /><br />
-        <input
-          type="password"
-          id="loginPassword"
-          placeholder="Password"
-        /><br />
-        <button onclick="login()" id="loginBtn">Login</button><br /><br />
+        <form action="" onsubmit="login()">
+          <input type="email" id="loginEmail" placeholder="Email" required /><br />
+          <input
+            type="password"
+            id="loginPassword"
+            placeholder="Password"
+            required
+          /><br />
+          <button type="submit" id="loginBtn">Login</button><br /><br />
+        </form>
         <span id="loginError" class="error"></span>
       </div>
       <div class="or-text">or</div>
       <div id="registerBox" class="hidden">
         <h2>Register</h2>
         <form action="" onsubmit="register()">
-        <input type="email" id="registerEmail" required placeholder="Email" /><br />
-        <input type="text" id="registerUsername" required placeholder="Username (Ex: 'aBc_123' ,minLength=4)" />
-        <!-- pattern="[a-zA-Z0-9_]{4,}"  -->
-        <span class="error" id="usernameError"></span>
-        <br />
-        <input
-          type="password"
-          id="registerPassword"
-          placeholder="Password (Min 4 chars)"
-          required
-        /><br />
-        <input
-          type="text"
-          id="registerFirstName"
-          placeholder="First Name (Only: [A-Z],[a-z])"
-          required
-          pattern="[a-zA-Z]+"
+          <input
+            type="email"
+            id="registerEmail"
+            required
+            placeholder="Email"
+          /><br />
+          <input
+            type="text"
+            id="registerUsername"
+            required
+            placeholder="Username (Ex: 'aBc_123' ,minLength=4)"
+          />
+          <!-- pattern="[a-zA-Z0-9_]{4,}"  -->
+          <span class="error" id="usernameError"></span>
+          <br />
+          <input
+            type="password"
+            id="registerPassword"
+            placeholder="Password (Min 4 chars)"
+            required
+          /><br />
+          <input
+            type="text"
+            id="registerFirstName"
+            placeholder="First Name (Only: [A-Z],[a-z])"
+            required
+            pattern="[a-zA-Z]+"
+          /><br />
+          <input
+            type="text"
+            id="registerLastName"
+            placeholder="Last Name (Only: [A-Z],[a-z])"
+            pattern="[a-zA-Z]+"
+            required
+          /><br />
+          <select id="registerGender" required>
+            <option disabled selected value>Select Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option></select
+          ><br />
+          <select id="registerRole" required>
+            <option disabled selected value>Select Role</option>
 
-        /><br />
-        <input
-          type="text"
-          id="registerLastName"
-          placeholder="Last Name (Only: [A-Z],[a-z])"
-          pattern="[a-zA-Z]+"
-          required
-
-        /><br />
-        <select id="registerGender" required>
-          <option disabled selected value> Select Gender </option>
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-          <option value="other">Other</option></select
-        ><br />
-        <select id="registerRole" required>
-          <option disabled selected value> Select Role </option>
-
-          <option value="admin">Admin</option>
-          <option value="operations">Operations</option>
-          <option value="sales">Sales</option></select
-        ><br />
-        <span class="error" id="registerError"></span>
-        <button type="submit" id="registerBtn">Register
-
-
-        </button>
-      </form>
+            <option value="admin">Admin</option>
+            <option value="operations">Operations</option>
+            <option value="sales">Sales</option></select
+          ><br />
+          <span class="error" id="registerError"></span>
+          <button type="submit" id="registerBtn">Register</button>
+        </form>
       </div>
     </div>
 
