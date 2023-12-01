@@ -24,12 +24,12 @@ async function login() {
       email,
       password,
     });
+    
     getUsersByRole();
     show("usersBox");
   } catch (error) {
     console.error("Login error:", error.response.data.message);
-    const loginErrorElement = document.getElementById("loginError");
-    displayError(loginErrorElement, error.response.data.message + "!");
+    displayError( 'loginError', error.response.data.message + "!");
   }
   loginBtn.innerHTML='Login'
 }
