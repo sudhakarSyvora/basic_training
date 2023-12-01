@@ -27,16 +27,13 @@ function secondLargest(arr) {
     let freq = {};  
     for (let i = 0; i < string.length; i++) {
       const char = string[i];
-     
       if (/[a-zA-Z0-9]/.test(char)) {
         if (!freq[char]) {
-           
           freq[char] = 0;
         }  
         freq[char]=freq[char]+1;
       }
     }
-  
     return freq; 
   }
   
@@ -47,7 +44,6 @@ function secondLargest(arr) {
     for (let key in obj) {
       if (obj.hasOwnProperty(key)) {
         let currentKey = parentDirecName ? `${parentDirecName}.${key}` : key;
-  
         if (typeof obj[key] === "object" ) {
           flatten(obj[key], currentKey);
         } else {
