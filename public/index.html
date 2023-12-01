@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>User Management App</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <h1 style="text-align: center">Welcome to Listing app!</h1>
+
+    <div class="form-container" id="cred">
+      <div id="loginBox" class="hidden">
+        <h2>Login</h2>
+
+        <input type="email" id="loginEmail" placeholder="Email" /><br />
+        <input
+          type="password"
+          id="loginPassword"
+          placeholder="Password"
+        /><br />
+        <button onclick="login()" id="loginBtn">Login</button><br /><br />
+        <span id="loginError" class="error"></span>
+      </div>
+      <div class="or-text">or</div>
+      <div id="registerBox" class="hidden">
+        <h2>Register</h2>
+        <form action="" onsubmit="register()">
+        <input type="email" id="registerEmail" required placeholder="Email" /><br />
+        <input type="text" id="registerUsername" required placeholder="Username (Ex: 'aBc_123' ,minLength=4)" />
+        <!-- pattern="[a-zA-Z0-9_]{4,}"  -->
+        <span class="error" id="usernameError"></span>
+        <br />
+        <input
+          type="password"
+          id="registerPassword"
+          placeholder="Password (Min 4 chars)"
+          required
+        /><br />
+        <input
+          type="text"
+          id="registerFirstName"
+          placeholder="First Name (Only: [A-Z],[a-z])"
+          required
+          pattern="[a-zA-Z]+"
+
+        /><br />
+        <input
+          type="text"
+          id="registerLastName"
+          placeholder="Last Name (Only: [A-Z],[a-z])"
+          pattern="[a-zA-Z]+"
+          required
+
+        /><br />
+        <select id="registerGender" required>
+          <option disabled selected value> Select Gender </option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option></select
+        ><br />
+        <select id="registerRole" required>
+          <option disabled selected value> Select Role </option>
+
+          <option value="admin">Admin</option>
+          <option value="operations">Operations</option>
+          <option value="sales">Sales</option></select
+        ><br />
+        <span class="error" id="registerError"></span>
+        <button type="submit" id="registerBtn">Register
+
+
+        </button>
+      </form>
+      </div>
+    </div>
+
+    <div id="usersBox">
+      <div class="user-info">
+        <div class="user-pic">
+          <img
+            src="data:image/png;base64,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"
+            alt="DummyuserPic"
+          />
+          <span id="email"></span>
+          <span>Role:<span id="role"></span></span>
+        </div>
+        <div class="user-actions">
+          <button onclick="logout()">Logout</button>
+        </div>
+      </div>
+      <h2>Users by Role</h2>
+      <table id="usersList"></table>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="./script.js"></script>
+  </body>
+</html>
