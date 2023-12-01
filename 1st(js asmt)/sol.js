@@ -29,13 +29,11 @@ function secondLargest(arr) {
       const char = string[i];
      
       if (/[a-zA-Z0-9]/.test(char)) {
-        if (freq.hasOwnProperty(char)) {
+        if (!freq[char]) {
            
-          freq[char] = freq[char] + 1;
-        } else {
-          
-          freq[char] = 1;
-        }
+          freq[char] = 0;
+        }  
+        freq[char]=freq[char]+1;
       }
     }
   
