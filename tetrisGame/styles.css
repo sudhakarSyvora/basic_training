@@ -1,0 +1,18 @@
+.ground{
+    width: 400px;
+    height: 600px;
+margin: auto;
+    border: 2px solid blue;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.row{
+border:1px solid red;
+display: flex;
+justify-content: space-between;
+}
+.singleBox{
+    border: 1px solid black;
+
+}
