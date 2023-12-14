@@ -21,9 +21,7 @@ function renderGrid() {
     playGround.appendChild(rowElem);
   });
 }
-
- 
-
+renderGrid();
 async function startGame() {
   // playGround.innerHTML = "";
   START_GAME = true;
@@ -46,7 +44,7 @@ async function startGame() {
       GRID[r][c] = color;
     });
     // popAndSettle();
-
+    // [[0,1,'yellow']]
     renderGrid();
 
     // return;
@@ -56,6 +54,7 @@ async function startGame() {
       // return;
       console.log(isGameFinished());
       if (isGameFinished()) {
+        START_GAME = false;
         return alert("Your score " + score);
       }
       fallingCubesIndexes = generateFallingCubes();
@@ -82,7 +81,7 @@ async function startGame() {
     }
 
     await new Promise((res, rej) => {
-      setInterval(res, 200);
+      setInterval(res, 400);
     });
   }
 }
@@ -164,22 +163,6 @@ function popAndSettle() {
   renderGrid();
 }
 
-// function settle(r,c) {
-//   for (let j = 0; j < GRID[0].length; j++) {
-//     let count = 0;
-
-//     for (let i = GRID.length - 1; i >= 0; i--) {
-//       if (GRID[i][j] == null) {
-//         count++;
-//       } else {
-//         GRID[i + count][j] = GRID[i][j];
-//         if (count) {
-//           GRID[i][j] = null;
-//         }
-//       }
-//     }
-//   }
-// }
 function settle(col) {
   console.log(col);
   // for (let j = 0; j < GRID[0].length; j++) {
@@ -204,23 +187,24 @@ function increaseScore(si) {
 
 document.addEventListener("keydown", function (event) {
   console.log(fallingCubesIndexes, "before");
+  if (START_GAME) {
+    if (event.key === "ArrowLeft") {
+      moveLeft();
+      renderGrid();
+    } else if (event.key === "ArrowRight") {
+      moveRight();
+      renderGrid();
+    } else if (event.key === "ArrowUp") {
+      console.log("up");
 
-  if (event.key === "ArrowLeft") {
-    moveLeft();
-    renderGrid();
-  } else if (event.key === "ArrowRight") {
-    moveRight();
-    renderGrid();
-  } else if (event.key === "ArrowUp") {
-    console.log("up");
-    moveUp();
-    renderGrid();
+      moveUp();
+      renderGrid();
+    }
   }
   console.log(fallingCubesIndexes, "after");
 });
 
 function moveLeft() {
-  console.log("called");
   if (fallingCubesIndexes) {
     if (canGoLeft()) {
       fallingCubesIndexes.map(([r, c, color]) => {
@@ -248,10 +232,6 @@ function moveRight() {
     }
   }
 }
-
- 
-
-renderGrid();
 
 function generateRandomColor() {
   const colors = ["blue", "red", "yellow", "purple", "green"];
@@ -336,9 +316,9 @@ function getBottomMostCells(matrix) {
   return bm;
 }
 
-function canGoLeft(){
+function canGoLeft() {
   for (const [r, c, color] of fallingCubesIndexes) {
-    if (c <1) {
+    if (c < 1) {
       return false;
     }
   }
@@ -346,7 +326,7 @@ function canGoLeft(){
   let found = false;
 
   for (let i = 15; i >= 0; i--) {
-    for (let j = 0; j <=8; j++) {
+    for (let j = 0; j <= 8; j++) {
       fallingCubesIndexes.forEach((item) => {
         if (item[0] === i && item[1] === j) {
           leftMostCells.push(item);
@@ -358,10 +338,10 @@ function canGoLeft(){
     found = false;
   }
   return leftMostCells.every(([r, c]) => {
-    if (GRID[r][c -1] == null) {
+    if (GRID[r][c - 1] == null) {
       return true;
     }
-    return false
+    return false;
   });
 }
 
@@ -390,6 +370,119 @@ function canGoRight() {
     if (GRID[r][c + 1] == null) {
       return true;
     }
-    return false
+    return false;
   });
+}
+
+function moveUp() {
+  function rotateSubMatrix(grid, startRow, startCol, n) {
+    const subMatrix = [];
+    // Extract the submatrix from the grid based on the startRow, startCol, and size n
+    for (let i = startRow; i < startRow + n; i++) {
+      const row = [];
+      for (let j = startCol; j < startCol + n; j++) {
+        row.push(grid[i][j]);
+      }
+      subMatrix.push(row);
+    }
+
+    // Function to rotate the submatrix clockwise
+    function rotateMatrix(matrix) {
+      const rows = matrix.length;
+      const cols = matrix[0].length;
+      const rotatedMatrix = new Array(cols)
+        .fill(null)
+        .map(() => new Array(rows));
+
+      for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
+          rotatedMatrix[j][rows - 1 - i] = matrix[i][j];
+        }
+      }
+
+      return rotatedMatrix;
+    }
+
+    const rotatedSubMatrix = rotateMatrix(subMatrix);
+
+    // Update the original grid with the rotated submatrix
+    for (let i = startRow, r = 0; i < startRow + n; i++, r++) {
+      for (let j = startCol, c = 0; j < startCol + n; j++, c++) {
+        grid[i][j] = rotatedSubMatrix[r][c];
+      }
+    }
+
+    return grid;
+  }
+
+  // Example input
+  // const input = [[1, 1, 'a'], [2, 1, 'd'], [2, 2,'c'],[1,2,'b']];
+  // const input  = [[0, 0, 'a'], [1, 0, 'b'], [2, 0,'c']];
+
+  const width = new Set();
+  const height = new Set();
+  let startRow = +Infinity;
+  let startCol = +Infinity;
+  fallingCubesIndexes.forEach(([r, c, color]) => {
+    startRow = Math.min(startRow, r);
+    startCol = Math.min(startCol, c);
+    width.add(c);
+    height.add(r);
+  });
+  const n = Math.max(width.size, height.size);
+
+  const grid = new Array(16).fill(null).map(() => new Array(9).fill(null));
+
+  fallingCubesIndexes.forEach(([rowIndex, colIndex, color]) => {
+    grid[rowIndex][colIndex] = color;
+  });
+  let rotatedGrid = [];
+
+  if (width.size == 3 && height.size == 1 && startRow - 1 >= 0) {
+    rotatedGrid = rotateSubMatrix(grid, startRow - 1, startCol, n);
+  } else if (height.size == 3 && width.size == 1 && startCol - 1 >= 0) {
+    console.log("2nd pos");
+    rotatedGrid = rotateSubMatrix(grid, startRow, startCol - 1, n);
+  } else if (height.size == 3) {
+    if (startCol != 0) startCol--;
+    rotatedGrid = rotateSubMatrix(grid, startRow, startCol, n);
+  } else {
+    rotatedGrid = rotateSubMatrix(grid, startRow, startCol, n);
+  }
+  const output = [];
+  rotatedGrid.forEach((row, r) => {
+    row.forEach((color, c) => {
+      if (color) {
+        output.push([r, c, color]);
+      }
+    });
+  });
+
+  let canBeRotated = output.every(([r, c, color]) => {
+    // Check if row and column are within the specified ranges
+    if (r >= 0 && r <= 16 && c >= 0 && c <= 9) {
+      if (GRID[r][c] == null) {
+        return true;
+      } else {
+        const foundElem = fallingCubesIndexes.find((item) => {
+          return item[0] === r && item[1] === c;
+        });
+        if (foundElem) {
+          return true;
+        }
+      }
+    }
+    return false;
+  });
+
+  if (canBeRotated) {
+    fallingCubesIndexes.forEach(([r, c, color]) => {
+      GRID[r][c] = null;
+    });
+    fallingCubesIndexes = output;
+    fallingCubesIndexes.forEach(([r, c, color]) => {
+      GRID[r][c] = color;
+    });
+    renderGrid();
+  }
 }
