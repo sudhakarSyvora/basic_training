@@ -27,9 +27,7 @@ async function startGame() {
   START_GAME = true;
 
   while (START_GAME) {
-    console.log(fallingCubesIndexes, "fci");
     const bottomMostCells = getBottomMostCells(fallingCubesIndexes);
-    console.log(bottomMostCells, "bmc");
     const isGridEmpty = bottomMostCells.every(([row, col]) => {
       if (row == 15) return false;
       if (GRID?.[row + 1] && GRID?.[row + 1]?.[col] === null) {
@@ -37,7 +35,6 @@ async function startGame() {
       }
       return false;
     });
-    console.log(isGridEmpty, "ige");
     // return
 
     fallingCubesIndexes.forEach(([r, c, color]) => {
@@ -52,7 +49,6 @@ async function startGame() {
       // return;
       popAndSettle();
       // return;
-      console.log(isGameFinished());
       if (isGameFinished()) {
         START_GAME = false;
         return alert("Your score " + score);
@@ -164,7 +160,6 @@ function popAndSettle() {
 }
 
 function settle(col) {
-  console.log(col);
   // for (let j = 0; j < GRID[0].length; j++) {
   col.forEach((j) => {
     let count = 0;
@@ -186,7 +181,6 @@ function increaseScore(si) {
 }
 
 document.addEventListener("keydown", function (event) {
-  console.log(fallingCubesIndexes, "before");
   if (START_GAME) {
     if (event.key === "ArrowLeft") {
       moveLeft();
@@ -195,13 +189,11 @@ document.addEventListener("keydown", function (event) {
       moveRight();
       renderGrid();
     } else if (event.key === "ArrowUp") {
-      console.log("up");
 
       moveUp();
       renderGrid();
     }
   }
-  console.log(fallingCubesIndexes, "after");
 });
 
 function moveLeft() {
@@ -441,7 +433,6 @@ function moveUp() {
   if (width.size == 3 && height.size == 1 && startRow - 1 >= 0) {
     rotatedGrid = rotateSubMatrix(grid, startRow - 1, startCol, n);
   } else if (height.size == 3 && width.size == 1 && startCol - 1 >= 0) {
-    console.log("2nd pos");
     rotatedGrid = rotateSubMatrix(grid, startRow, startCol - 1, n);
   } else if (height.size == 3) {
     if (startCol != 0) startCol--;
