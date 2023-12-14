@@ -23,4 +23,4 @@ fs.writeFile(filename, jobsWithTagsJSON, 'utf8', (err) => {
         console.log(`Data saved in ${filename}`);
     }
 });
-console.log(undefinedVariable);
+console.log(undefinedVariabjle);
