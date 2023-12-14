@@ -5,7 +5,8 @@
   "main": "jobs.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon job.js"
+    "start": "nodemon job.js",
+    "lint": "eslint ."
   },
   "author": "",
   "license": "ISC",
