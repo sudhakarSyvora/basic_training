@@ -1,0 +1,23 @@
+{
+  "firstName": "sudha",
+  "lastName": "Doe",
+  "age": 25,
+  "address": {
+    "street": "Infinite Loop",
+    "city": "Cupertino",
+    "state": "CA",
+    "postalCode": "95014"
+  },
+  "phoneNumbers": [
+    {
+      "type": "home",
+      "number": "212 555-1234"
+    },
+    {
+      "type": "office",
+      "number": "646 555-4567"
+    }
+  ],
+  "children": [],
+  "spouse": null
+}
