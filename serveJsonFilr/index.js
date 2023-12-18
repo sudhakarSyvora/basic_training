@@ -4,7 +4,7 @@ const path = require('path');
  
 const jsonFilePath = path.join(__dirname, 'data.json');
 
-let content = fs.readFileSync(jsonFilePath, 'utf8');
+let content = fs.readFileSync(jsonFilePath);
 let data = JSON.parse(content);
 const server = http.createServer((req, res) => {
   if (req.method === 'GET' && req.url === '/content') {
